@@ -3,7 +3,8 @@
     <div class="form-action">
       <p>用户：<input type="text" value={user} v-model="user" /></p>
       <p>年龄：<input type="text" value={age} v-model="age" /></p>
-      <button @click="dataFn(count)">添加</button>
+      <input type="text" value={id} style="display:none">
+      <button @click="dataFn(flag)">{{flag === 0 ? '添加' : '修改'}}</button>
     </div>
     <table 
       border='1' 
@@ -23,10 +24,10 @@
         <tr v-for="(v) in data" :key='v.id'>
           <td>{{v.name}}</td>
           <td>{{v.age}}</td>
-          <td>{{v.gender}}</td>
+          <td>{{v.id}}</td>
           <td>
-            <button>修改</button>
-            <button>删除</button>
+            <button @click="changeFn(v)">修改</button>
+            <button @click="deleteFn(v)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -43,7 +44,7 @@
       return {
         user: '',
         age: '',
-        count: 0
+        id: '',
       }
     },
 
@@ -52,15 +53,31 @@
     },
 
     computed: {
-      ...mapState(['data'])
+      ...mapState(['data','flag'])
     },
 
     methods: {
-      dataFn () {
+      dataFn (val) {//添加修改列表
         let obj = {};
         obj.name = this.user;
         obj.age = this.age;
-        this.$store.commit('ADD_DATA', obj);
+        if(val === 0){
+          this.$store.commit('ADD_DATA', obj);
+        } else {
+          obj.id = this.id;
+          this.$store.commit('CHANGE_DATA', obj);
+        }
+      },
+
+      deleteFn (val) {//删除
+        this.$store.commit('DELETE_DATA', {id: val.id});
+      },
+
+      changeFn (val) {//修改
+        this.user = val.name;
+        this.age = val.age;
+        this.id = val.id;
+        this.$store.commit('CHANGE_FLAG')
       }
     }
   }
