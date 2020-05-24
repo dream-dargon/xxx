@@ -22,8 +22,8 @@
         let obj = {};
         obj.username = this.username;
         obj.password = this.password;
-        this['GET_LOGIN_USER'](obj);
         this.$router.push({name: 'Home'});
+        this['GET_LOGIN_USER'](obj);
       },
 
       ...mapMutations('login',['GET_LOGIN_USER'])
