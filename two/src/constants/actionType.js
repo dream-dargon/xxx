@@ -1,0 +1,5 @@
+//登录
+export const GET_LOGIN_USER = 'GET_LOGIN_USER'
+//主页面
+export const GET_SUPPLIER_LIST = 'GET_SUPPLIER_LIST'
+export const SUPPLIER_LIST_ACTION = 'SUPPLIER_LIST_ACTION'
