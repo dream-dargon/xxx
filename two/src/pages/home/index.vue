@@ -5,22 +5,48 @@
       <span>
         <el-form ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="供应商名称" prop="pass">
-            <el-input type="text" v-model="ruleForm.supplierName" autocomplete="off"></el-input>
+            <el-input 
+              type="text" 
+              autocomplete="off"
+              value={ruleForm.supplierName} 
+              v-model="ruleForm.supplierName"
+            ></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="checkPass">
-            <el-input type="text" v-model="ruleForm.supplierContact" autocomplete="off"></el-input>
+            <el-input 
+              type="text" 
+              autocomplete="off"
+              value={ruleForm.supplierContact} 
+              v-model="ruleForm.supplierContact"
+            ></el-input>
           </el-form-item>
           <el-form-item label="联系电话" prop="phone">
-            <el-input type="text" v-model.number="ruleForm.phone"></el-input>
+            <el-input 
+              type="text" 
+              value={ruleForm.phone} 
+              v-model="ruleForm.phone"
+            ></el-input>
           </el-form-item>
           <el-form-item label="地址" prop="address">
-            <el-input type="text" v-model.number="ruleForm.address"></el-input>
+            <el-input 
+              type="text" 
+              value={ruleForm.address} 
+              v-model="ruleForm.address"
+            ></el-input>
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-input type="text" v-model.number="ruleForm.status"></el-input>
+            <el-input 
+              type="text"
+              value={ruleForm.status} 
+              v-model="ruleForm.status"
+            ></el-input>
           </el-form-item>
           <el-form-item label="描述" prop="description">
-            <el-input type="text" v-model.number="ruleForm.description"></el-input>
+            <el-input 
+              type="text"
+              value={ruleForm.description} 
+              v-model="ruleForm.description"
+            ></el-input>
           </el-form-item>
         </el-form>
       </span>
@@ -48,7 +74,7 @@
           <td>{{v.address}}</td>
           <td>{{v.description}}</td>
           <td>
-            <el-button type="primary" @click="editFn(v.supplierId)">编辑</el-button>
+            <el-button type="primary" @click="editFn(v)">编辑</el-button>
             <el-button type="danger" @click="deleteFn(v.supplierId)">删除</el-button>
           </td>
         </tr>
@@ -76,7 +102,8 @@
           phone: '',
           address: '',
           status: '',
-          description: ''
+          description: '',
+          supplierId: ''
         },
       };
     },
@@ -88,8 +115,21 @@
     methods: {
       submitForm(formName) {
         this.dialogVisible = false;
-        console.log(this.ruleForm)
-        this['ADD_SUPPLIER_DATA'](this.ruleForm);
+        console.log(this.ruleForm);
+        if(this.count === '添加'){
+          this['ADD_SUPPLIER_DATA'](this.ruleForm);
+        } else {
+          this['EDIT_SUPPLIER_DATA'](this.ruleForm);
+          this.ruleForm = {
+            supplierName: '',
+            supplierContact: '',
+            phone: '',
+            address: '',
+            status: '',
+            description: '',
+            supplierId: ''
+          }
+        }
         this.$refs[formName].validate((valid) => {
           if (!valid) {
             return false;
@@ -103,14 +143,20 @@
       editFn (val) {
         this.dialogVisible = true;
         this.count = '编辑';
-        console.log(val)
+        for(let t in val) {
+          this.ruleForm[t] = val [t];
+        }
       },
       deleteFn (val) {
         let obj = {};
         obj.id = val;
-        this['DELETE_SUPPLIER_DATA'](obj);
+        this.submitForm(obj);
       },
-      ...mapMutations(['ADD_SUPPLIER_DATA','DELETE_SUPPLIER_DATA'])
+      ...mapMutations([
+        'ADD_SUPPLIER_DATA',
+        'DELETE_SUPPLIER_DATA',
+        'EDIT_SUPPLIER_DATA'
+      ])
     }
   };
 </script>

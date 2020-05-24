@@ -5,7 +5,8 @@ import {
   GET_SUPPLIER_LIST, 
   SUPPLIER_LIST_ACTION,
   ADD_SUPPLIER_DATA,
-  DELETE_SUPPLIER_DATA
+  DELETE_SUPPLIER_DATA,
+  EDIT_SUPPLIER_DATA
 } from '@/constants/actionType'
 import api from '@/services/api'
 import { get, post } from '@/utils/request'
@@ -32,6 +33,14 @@ export default new Vuex.Store({
 
     [DELETE_SUPPLIER_DATA] (state, action) {
       post(api.deleteSupplier,action).then(res => {
+        if(res.code === 200) {
+          this.dispatch(SUPPLIER_LIST_ACTION);
+        }
+      })
+    },
+
+    [EDIT_SUPPLIER_DATA] (state, action) {
+      post(api.editSupplier,action).then(res => {
         if(res.code === 200) {
           this.dispatch(SUPPLIER_LIST_ACTION);
         }
