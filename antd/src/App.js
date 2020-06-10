@@ -4,6 +4,7 @@ export default class App extends React.Component {
     return (
       <div>
          1111
+         2222
       </div>
     )
   }
